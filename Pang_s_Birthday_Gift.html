@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy 34th Birthday, Lerato Laka</title>
+    
+    <!-- Loading Google Fonts: Cormorant Garamond for elegant serif, Inter for clean readable sans-serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Loading Tailwind CSS via CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FDFBF7',
+                        blush: '#F9E8E8',
+                        dusty: '#E6C8C8',
+                        burgundy: '#592321',
+                        rose: '#8B4C53'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(139, 76, 83, 0.08)',
+                        'envelope': '0 2px 10px rgba(89, 35, 33, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDFBF7;
+            color: #592321;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Smooth View Transitions */
+        .view-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        
+        .view-section.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Floating Background Animations */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(5deg); opacity: 0.6; }
+            100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+        }
+
+        .bg-element {
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-1 { top: 10%; left: 5%; animation-delay: 0s; font-size: 1.5rem; }
+        .bg-2 { top: 20%; right: 10%; animation-delay: 2s; font-size: 1rem; }
+        .bg-3 { bottom: 15%; left: 15%; animation-delay: 4s; font-size: 1.2rem; }
+        .bg-4 { bottom: 30%; right: 5%; animation-delay: 1s; font-size: 1.8rem; }
+        .bg-5 { top: 50%; left: 8%; animation-delay: 3s; font-size: 1rem; opacity: 0.2; }
+
+        /* Custom Scrollbar for Note text */
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #FDFBF7;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #E6C8C8;
+            border-radius: 4px;
+        }
+
+        /* Envelope Interaction Styles */
+        .envelope-card {
+            transition: all 0.3s ease;
+        }
+        .envelope-card:active {
+            transform: scale(0.95);
+        }
+        
+        /* Note Opening Animation */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-note {
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        /* Photo Placeholder styling */
+        .photo-frame {
+            border: 1px dashed #E6C8C8;
+            background-color: rgba(249, 232, 232, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .photo-frame img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none; /* Hidden by default until src is populated */
+        }
+        /* Reveal image if src is not empty/placeholder */
+        .photo-frame img[src]:not([src=""]) {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased min-h-screen relative flex flex-col items-center">
+
+    <!-- Optional Music Player (Hidden UI, toggled via button) -->
+    <!-- INSTRUCTIONS: Add your song link to the 'src' attribute below (e.g., src="song.mp3") -->
+    <audio id="bg-music" loop>
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <!-- Floating Background Elements -->
+    <div class="bg-element bg-1">🌸</div>
+    <div class="bg-element bg-2">🤍</div>
+    <div class="bg-element bg-3">🌷</div>
+    <div class="bg-element bg-4">✨</div>
+    <div class="bg-element bg-5">🤎</div>
+
+    <!-- Music Toggle Button -->
+    <button id="music-btn" class="fixed top-6 right-6 z-50 w-10 h-10 rounded-full bg-white shadow-soft flex items-center justify-center text-rose focus:outline-none transition-transform hover:scale-105 active:scale-95" aria-label="Toggle Music">
+        ♪
+    </button>
+
+    <!-- Main Content Container (Mobile constraints for elegant reading) -->
+    <main class="relative z-10 w-full max-w-md mx-auto min-h-screen px-6 py-10 flex flex-col">
+        
+        <!-- ================= START SCREEN ================= -->
+        <section id="view-start" class="view-section active flex-col flex-1 items-center justify-center text-center">
+            <h2 class="text-rose text-sm font-medium tracking-[0.2em] uppercase mb-4">A Birthday Gift</h2>
+            <h1 class="font-serif text-4xl md:text-5xl text-burgundy font-medium leading-tight mb-6">
+                Happy 34th Birthday,<br>
+                <span class="italic">Lerato Laka</span>
+            </h1>
+            
+            <p class="font-serif text-2xl text-rose mb-10 italic">
+                34 reasons I love you.
+            </p>
+
+            <!-- Photo Placeholder 1 -->
+            <div class="photo-frame w-full h-48 mb-8">
+                <!-- INSTRUCTIONS: To add a photo, put the image filename in src below (e.g., src="us.jpg") -->
+                <img src="" alt="Us" onerror="this.style.display='none'">
+                <p class="text-sm text-rose/70 font-medium px-4">
+                    📸 Also… we need more pictures together cos this would be better with our pictures 😂❤️
+                </p>
+            </div>
+            
+            <button onclick="startExperience()" class="mt-4 px-8 py-4 bg-blush text-burgundy rounded-full shadow-envelope font-medium tracking-wide transition-all hover:bg-dusty hover:shadow-soft active:scale-95 flex items-center gap-2">
+                Open your first note ✉️
+            </button>
+        </section>
+
+        <!-- ================= WALL SCREEN ================= -->
+        <section id="view-wall" class="view-section flex-col flex-1">
+            <div class="text-center mb-8 mt-4">
+                <h2 class="font-serif text-3xl text-burgundy mb-2">Your Notes</h2>
+                <p class="text-sm text-rose">Tap an envelope to open</p>
+            </div>
+            
+            <!-- Grid generated by JS -->
+            <div id="envelope-grid" class="grid grid-cols-4 gap-4 pb-10">
+                <!-- Envelopes injected here -->
+            </div>
+        </section>
+
+        <!-- ================= NOTE SCREEN ================= -->
+        <section id="view-note" class="view-section flex-col flex-1 pb-10">
+            
+            <!-- Top Navigation & Progress -->
+            <div class="flex items-center justify-between mb-4 mt-2">
+                <button onclick="showWall()" class="text-rose text-sm font-medium flex items-center gap-1 active:opacity-50 transition-opacity">
+                    ← Notes
+                </button>
+                <span id="note-counter" class="font-serif text-xl text-burgundy italic">01 / 34</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full h-1 bg-blush rounded-full mb-8 overflow-hidden">
+                <div id="progress-fill" class="h-full bg-rose transition-all duration-500 ease-out" style="width: 0%"></div>
+            </div>
+
+            <!-- Note Card -->
+            <div class="bg-white rounded-2xl shadow-soft p-8 md:p-10 flex-1 flex flex-col mb-8 relative border border-blush/50">
+                <div class="absolute top-0 right-0 p-6 opacity-20 text-4xl pointer-events-none text-dusty font-serif italic">”</div>
+                
+                <h3 id="note-title" class="font-serif text-2xl text-rose mb-6 border-b border-blush pb-4">Reason #01</h3>
+                
+                <div class="custom-scroll overflow-y-auto flex-1 pr-2">
+                    <p id="note-text" class="text-burgundy text-lg leading-relaxed font-serif whitespace-pre-wrap">
+                        <!-- Reason text injected here -->
+                    </p>
+                </div>
+                
+                <!-- Dynamic Photo Placeholder inside Note -->
+                <div id="note-photo-container" class="photo-frame w-full h-40 mt-6 hidden">
+                    <!-- INSTRUCTIONS: Image src is set via JavaScript for specific notes -->
+                    <img id="note-dynamic-img" src="" alt="Memory" onerror="this.style.display='none'">
+                    <p class="text-xs text-rose/70 font-medium px-4">Future us needs more pictures here 😂</p>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="flex justify-end">
+                <button onclick="nextNote()" class="px-6 py-3 bg-blush text-burgundy rounded-full shadow-envelope font-medium text-sm transition-all hover:bg-dusty active:scale-95 flex items-center gap-2">
+                    Next note →
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FINAL SCREEN ================= -->
+        <section id="view-final" class="view-section flex-col flex-1 items-center justify-center text-center">
+            
+            <!-- Final Photo Placeholder -->
+            <div class="photo-frame w-full max-w-[250px] h-[250px] rounded-full mb-10 shadow-soft border-4 border-white">
+                <!-- INSTRUCTIONS: Put the final image filename in src below -->
+                <img src="" alt="Us Forever" onerror="this.style.display='none'" class="rounded-full">
+                <p class="text-sm text-rose/70 font-medium px-4">Future us goes here ❤️</p>
+            </div>
+
+            <h2 class="font-serif text-3xl md:text-4xl text-burgundy italic mb-8">
+                And that’s only 34.
+            </h2>
+            
+            <p class="font-serif text-2xl text-rose leading-relaxed mb-6">
+                Kea u rata, mohlakoana e motle. ❤️
+            </p>
+            
+            <p class="text-burgundy font-medium">
+                I will spend the whole lifetime making sure you know that.
+            </p>
+            
+            <button onclick="showWall()" class="mt-12 text-sm text-rose underline decoration-dusty underline-offset-4">
+                Look back at the notes
+            </button>
+        </section>
+
+    </main>
+
+    <script>
+        // ================= DATA =================
+        // All 34 reasons, preserved exactly as requested.
+        const reasons = [
+            "I love your smile. I don’t think I’ve ever had a flashback of us where you weren’t smiling 😂❤️",
+            "You are ridiculously calm and positive, always. You’re like the high to my low ❤️",
+            "I love a lot of things about you. The sweatpants are not one of them. I hate those sweatpants I keep complaining about 😂",
+            "You are my best friend! I know people always say, ‘my boyfriend is my best friend,’ but you’re my literal best friend. I genuinely can’t think of anything that happens that I don’t want to share with you.",
+            "You’re so emotionally regulated. Even in situations where you probably should be flying off the hanger, you don’t. I appreciate that about you so much.",
+            "I always say that if there’s one thing I can bet on, it’s that you love me. I think that’s why I genuinely don’t care about other people’s opinions of me. As long as those people aren’t you, I’m good.",
+            "You have great taste in a few things. For example: me 🤷🏽‍♀️ Does it get greater than this? No 😂❤️",
+            "You make me want to see what tomorrow would look like. I think you’ve been planting these small ideas in my head since we met, and now I actually look forward to our future 🙄 Crazy, because I barely have a will to live 😂",
+            "I don’t think I say this enough, but you’re an amazing human being. Shout out to the people who raised you! They made such a nice, compassionate person. I’m glad to be a person who gets to experience you.",
+            "I love how comfortable you make me. I don’t think I ever have to be anyone or anything other than myself around you because you’ve never made me feel like I’m too much. Thank you ❤️",
+            "I know you probably don’t understand why I said I prefer you calling me ‘Princess’ over anything else 😂 I just love the way you say it.",
+            "We NEVER shut up!!!!! 😂 I don’t think there are two people who gossip more than us 😂 I still remember that time I had you blocked but had to unblock you because I needed to get tea on some people 😂😂😂",
+            "You are so well put together, even in unsettling situations. I appreciate your ability to go through life unbothered despite everything life throws at you.",
+            "I worry about you so much! Honestly? I struggle to sleep when you’re not home. I mean when you’re outside your house. I prefer falling asleep knowing you’re also tucked in safe because I genuinely don’t know what I’d do if anything ever happened to you.",
+            "You’re the literal half of me. If I didn’t believe in soulmates before, I do now. If souls had shapes, ours would be puzzle pieces that just fit together.",
+            "I can’t wait to spend the rest of my life with you. You make everything so easy for me, and I hope I can try to be half as good to you as you are to me. But hey, we have a lifetime to get through it ❤️",
+            "I’m never getting you a PS5 btw 😂 You have a higher chance of getting a car out of me before a PS5 😂😂😂 You’re probably thinking, why? Because you already made me fall in love with you, I’m willing to spend the rest of my life with you and give you a kid. I gotta hold out on something 😂😂😂",
+            "I love how seamlessly we just get along. We spent time together for the first time and it was like a week 😂 Yet it insanely felt like we’d done it before, despite it being the first time we’d ever spent a night together. Now, in my head, we live together 😂",
+            "I can’t imagine being without you. I get so sulky when I don’t see your face for a day 😂 I love looking at you because I love seeing your face. That’s my favourite face on earth… until we make one that’s half you and half me 😂❤️",
+            "I love that you have a life outside our relationship. I love that we have lives. As much as you’re my whole world, I love watching you have relationships with other people that make up your life. You’re a beautiful spirit, and you deserve a full life.",
+            "I love that there’s never been a time when we tried to change each other to make this relationship work. We’ve just been ourselves and figured out how to make space for each other in our individual lives.",
+            "I love waking up next to you 😂 Maybe it’s because I love watching you sleep because I wake up first 😂 Very creepy, I know, but honestly, if you don’t like it, wake up earlier then! 😂🤷🏽‍♀️",
+            "Boy, did we use to be adventurous back in the day 😂 I can’t believe I let you have sex with me in your workplace and your car 😂😂😂 You owe me so much because who has sex in a car, in the middle of the day, outside their friend’s house? 😂",
+            "I love that you make me feel good. You calm me, you help me not give up when I feel like it, and you have supported every single dumb thing in my life.",
+            "Oh, and you have spoiled me so much 😂 You used to stay up with me in varsity, you help me navigate Saudi even though you’ve never been here 😂 Overly babied. I love it.",
+            "I love that you take good care of me. You are the best person I could ever ask for. I didn’t even ask 🤷🏽‍♀️ Maybe you prayed you’d get me 😂 That’s the only thing that would make sense 😂",
+            "When I first figured out I was in love with you, it was one of the scariest moments of my life because we were in such a complicated space. You’re the first and only person I’ve ever loved so much that my heart actually flutters when I think of you.",
+            "You’re patient with me. You stick with me even on the days when I’m doubtful about us. And I’m not doubting our love for each other, no! Never that. I’m just sometimes scared that this feels too good and there’ll be something that takes it from us or ruins it, and I’m not prepared for that.",
+            "You know I love that you have annoying hobbies 😂 I will support every single one of them through and through because you do the same for me. Mostly your willingness to watch a 90-minute soccer match a ridiculous amount of times 😂 But I can’t complain. I get half-time rounds 😂🤷🏽‍♀️",
+            "I think you’re such a secure, unproblematic person. We’ve never had any issues or concerns over friendships I have or anything. It’s beautiful.",
+            "Having a partner who doesn’t set off your nervous system is so underrated! You just fit into my life so well without making me feel any type of way other than the way I always have. You’re like a custom-made human for my life. I love you.",
+            "I could be sleeping with my hand on it right now 😂 See how you take nice things from me because you don’t wanna learn how to teleport? 😂 Do better!!!!",
+            "So, are we going to be sharing socks for life? 😂 Because my socks are unsafe in your presence!",
+            "Kea u rata! There aren’t enough words that can fully describe the love I have for you, so I will spend every single day of this life showing it.\n\nI would choose you in every lifetime because you’re my person. I can’t wait to spend the rest of my life with you. I can’t wait to see what life has in store for us.\n\nLife doesn’t have happy endings, but I hope we have a happy life until it ends. I want to be your partner in everything. I want you to keep being my voice of reason. I want us to keep making each other happy until the very end.\n\nI hope our kids experience this love that we have for each other.\n\nI can’t believe you are 34! I have known you since you were 29 😂 I technically raised you 😂\n\nKea u rata, mohlakoana e motle! I will spend the whole lifetime making sure you know that. ❤️"
+        ];
+
+        // ================= STATE =================
+        const TOTAL_NOTES = 34;
+        let currentNoteIndex = 0; // 0-based index
+        let openedNotes = new Set(); // Keeps track of which notes have been opened
+
+        // Define which notes should display a photo placeholder
+        // Using indices (0 to 33). E.g., Note #10 is index 9.
+        const notesWithPhotos = {
+            9: "",  // After reason 10
+            19: "", // After reason 20
+            29: ""  // After reason 30
+        };
+
+        // ================= VIEW LOGIC =================
+        function switchView(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+                // Small timeout to allow transition to complete
+                setTimeout(() => {
+                    if (!el.classList.contains('active')) {
+                        el.style.display = 'none';
+                    }
+                }, 400); 
+            });
+
+            // Show target view
+            const target = document.getElementById(viewId);
+            target.style.display = 'flex';
+            // Trigger reflow for animation
+            void target.offsetWidth; 
+            target.classList.add('active');
+            
+            // Scroll to top when changing views
+            window.scrollTo(0, 0);
+        }
+
+        function startExperience() {
+            renderWall();
+            switchView('view-wall');
+        }
+
+        function showWall() {
+            renderWall();
+            switchView('view-wall');
+        }
+
+        // ================= WALL LOGIC =================
+        function renderWall() {
+            const grid = document.getElementById('envelope-grid');
+            grid.innerHTML = ''; // Clear existing
+
+            for (let i = 0; i < TOTAL_NOTES; i++) {
+                const noteNum = i + 1;
+                const isOpened = openedNotes.has(i);
+                
+                // Format number with leading zero (01, 02...)
+                const numDisplay = noteNum.toString().padStart(2, '0');
+                
+                const btn = document.createElement('button');
+                btn.className = `envelope-card aspect-square rounded-xl flex flex-col items-center justify-center gap-1 shadow-envelope border relative ${
+                    isOpened ? 'bg-white border-dusty/30' : 'bg-blush border-blush'
+                }`;
+                btn.onclick = () => openNote(i);
+                
+                // Icon (closed envelope vs opened flower)
+                const icon = document.createElement('span');
+                icon.className = 'text-2xl mb-1';
+                icon.innerHTML = isOpened ? '🌷' : '✉️';
+                
+                // Number
+                const num = document.createElement('span');
+                num.className = `font-serif font-medium ${isOpened ? 'text-rose' : 'text-burgundy'}`;
+                num.innerText = numDisplay;
+
+                btn.appendChild(icon);
+                btn.appendChild(num);
+                grid.appendChild(btn);
+            }
+        }
+
+        // ================= NOTE LOGIC =================
+        function openNote(index) {
+            currentNoteIndex = index;
+            openedNotes.add(index);
+            
+            const noteNum = index + 1;
+            const numDisplay = noteNum.toString().padStart(2, '0');
+            
+            // Update UI Elements
+            document.getElementById('note-counter').innerText = `${numDisplay} / ${TOTAL_NOTES}`;
+            document.getElementById('note-title').innerText = `Reason #${numDisplay}`;
+            
+            // Handle multi-paragraph text (convert \n to <br>)
+            const textContent = reasons[index].replace(/\n/g, '<br>');
+            const textElement = document.getElementById('note-text');
+            textElement.innerHTML = textContent;
+            
+            // Reset animation
+            textElement.classList.remove('animate-note');
+            void textElement.offsetWidth; // Trigger reflow
+            textElement.classList.add('animate-note');
+
+            // Update Progress Bar
+            const progressPercent = (noteNum / TOTAL_NOTES) * 100;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+
+            // Handle Photo Placeholder
+            const photoContainer = document.getElementById('note-photo-container');
+            if (index in notesWithPhotos) {
+                photoContainer.classList.remove('hidden');
+                document.getElementById('note-dynamic-img').src = notesWithPhotos[index];
+            } else {
+                photoContainer.classList.add('hidden');
+            }
+
+            switchView('view-note');
+        }
+
+        function nextNote() {
+            if (currentNoteIndex < TOTAL_NOTES - 1) {
+                // Open the next note
+                openNote(currentNoteIndex + 1);
+            } else {
+                // All done, go to final screen
+                openedNotes.add(currentNoteIndex); // Ensure the last one is marked open
+                switchView('view-final');
+            }
+        }
+
+        // ================= MUSIC LOGIC =================
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            // Check if audio src is empty to prevent errors
+            if (!audio.getAttribute('src') || audio.getAttribute('src') === '') {
+                // Flash a color to indicate no music is loaded yet
+                musicBtn.classList.add('bg-dusty', 'text-white');
+                setTimeout(() => {
+                    musicBtn.classList.remove('bg-dusty', 'text-white');
+                }, 500);
+                return;
+            }
+
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.style.opacity = '0.5';
+            } else {
+                audio.play().catch(e => console.log("Audio play failed:", e));
+                musicBtn.style.opacity = '1';
+            }
+            isPlaying = !isPlaying;
+        });
+        
+        // Initialize button style
+        musicBtn.style.opacity = '0.5';
+
+    </script>
+</body>
+</html>
